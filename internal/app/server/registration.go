@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func registrationInit(w http.ResponseWriter, req *http.Request) {
+func registration(w http.ResponseWriter, req *http.Request) {
 	var newUser user.User
 
 	var err = json.NewDecoder(req.Body).Decode(&newUser)

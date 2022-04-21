@@ -8,7 +8,7 @@ import (
 var userRecords = db.Record{}
 
 func InitServer() {
-	http.HandleFunc("/registration-init", registrationInit)
+	http.HandleFunc("/registration", registration)
 
 	err := http.ListenAndServe(":8090", nil)
 	if err != nil {
