@@ -19,7 +19,7 @@ func registrationReq() {
 	postBody, _ := json.Marshal(newUser)
 	responseBody := bytes.NewBuffer(postBody)
 
-	resp, err := http.Post("http://localhost:8090/registration-init", "application/json", responseBody)
+	resp, err := http.Post("http://localhost:8090/registration", "application/json", responseBody)
 	if err != nil {
 		log.Fatalf("An Error Occured %v", err)
 	}
