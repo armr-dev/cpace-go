@@ -6,7 +6,6 @@ import (
 	cpaceLib "filippo.io/cpace"
 	"fmt"
 	"github.com/armr-dev/cpace-go/internal/app/cpace"
-	"github.com/armr-dev/cpace-go/internal/utils"
 	"net/http"
 )
 
@@ -15,12 +14,11 @@ type ClientRegistration struct {
 	UserName string
 }
 
-func authentication(username, password string) (string, error) {
+func Authentication(username, password string) (string, error) {
 	c := cpaceLib.NewContextInfo(username, string(cpace.ServerId), nil)
 
 	msgA, state, err := cpaceLib.Start(password, c)
 	if err != nil {
-		fmt.Println(err)
 		return "", err
 	}
 
@@ -36,7 +34,6 @@ func authentication(username, password string) (string, error) {
 	}
 
 	var msgB []byte
-	utils.Use(msgB, state)
 
 	err = json.NewDecoder(resp.Body).Decode(&msgB)
 	if err != nil {

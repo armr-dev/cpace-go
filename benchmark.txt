@@ -1,0 +1,13 @@
+2022/04/23 14:10:38 server started
+goos: darwin
+goarch: arm64
+BenchmarkAuthentication-8               	     100	    574541 ns/op
+BenchmarkNewContextInfo-8               	     100	         2.080 ns/op
+BenchmarkStart-8                        	     100	    101658 ns/op
+BenchmarkExchange-8                     	     100	    174182 ns/op
+BenchmarkFinish-8                       	     100	     78085 ns/op
+BenchmarkAuthenticationClientServer-8   	     100	    616713 ns/op
+PASS
+2022/04/23 14:10:38 server stopped
+2022/04/23 14:10:38 server exited properly
+ok  	command-line-arguments	0.401s

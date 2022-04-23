@@ -2,12 +2,11 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/armr-dev/cpace-go/internal/app/user"
 	"net/http"
 )
 
-func registration(w http.ResponseWriter, req *http.Request) {
+func Registration(w http.ResponseWriter, req *http.Request) {
 	var newUser user.User
 
 	var err = json.NewDecoder(req.Body).Decode(&newUser)
@@ -23,5 +22,5 @@ func registration(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Println("User registered successfully!")
+	//fmt.Println("User registered successfully!")
 }

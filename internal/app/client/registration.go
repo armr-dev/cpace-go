@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func registrationReq(username, password string) (string, error) {
+func Registration(username, password string) (string, error) {
 	var newUser = user.User{
 		UserName: []byte(username),
 		Password: []byte(password),

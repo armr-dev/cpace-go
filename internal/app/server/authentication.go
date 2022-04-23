@@ -3,14 +3,13 @@ package server
 import (
 	"encoding/json"
 	cpaceLib "filippo.io/cpace"
-	"fmt"
 	"github.com/armr-dev/cpace-go/internal/app/client"
 	"github.com/armr-dev/cpace-go/internal/app/cpace"
 	"github.com/armr-dev/cpace-go/internal/utils"
 	"net/http"
 )
 
-func (k *Keys) authenticationInit(w http.ResponseWriter, req *http.Request) {
+func (k *Keys) AuthenticationInit(w http.ResponseWriter, req *http.Request) {
 	var clientReg client.ClientRegistration
 	var err = json.NewDecoder(req.Body).Decode(&clientReg)
 	if err != nil {
@@ -37,7 +36,7 @@ func (k *Keys) authenticationInit(w http.ResponseWriter, req *http.Request) {
 	k.KeyB = keyB
 }
 
-func (k *Keys) authenticationFinalize(w http.ResponseWriter, req *http.Request) {
+func (k *Keys) AuthenticationFinalize(w http.ResponseWriter, req *http.Request) {
 	var keyA []byte
 
 	var err = json.NewDecoder(req.Body).Decode(&keyA)
@@ -60,5 +59,5 @@ func (k *Keys) authenticationFinalize(w http.ResponseWriter, req *http.Request) 
 		return
 	}
 
-	fmt.Println(response)
+	//fmt.Println(response)
 }
