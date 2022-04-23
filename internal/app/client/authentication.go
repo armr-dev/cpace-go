@@ -7,21 +7,32 @@ import (
 	"fmt"
 	"github.com/armr-dev/cpace-go/internal/app/cpace"
 	"github.com/armr-dev/cpace-go/internal/utils"
-	"log"
 	"net/http"
 )
 
-func authentication() {
-	c := cpaceLib.NewContextInfo(string(cpace.DefaultUserName), string(cpace.ServerId), nil)
+type ClientRegistration struct {
+	MsgA     []byte
+	UserName string
+}
 
-	msgA, state, err := cpaceLib.Start(string(cpace.DefaultPassword), c)
+func authentication(username, password string) (string, error) {
+	c := cpaceLib.NewContextInfo(username, string(cpace.ServerId), nil)
 
-	postBody, _ := json.Marshal(msgA)
+	msgA, state, err := cpaceLib.Start(password, c)
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	clientReg := ClientRegistration{msgA, username}
+
+	postBody, _ := json.Marshal(clientReg)
 	responseBody := bytes.NewBuffer(postBody)
 
 	resp, err := http.Post("http://localhost:8090/authentication-init", "application/json", responseBody)
 	if err != nil {
-		log.Fatalf("An Error Occured %v", err)
+		fmt.Println(err)
+		return "", err
 	}
 
 	var msgB []byte
@@ -29,27 +40,31 @@ func authentication() {
 
 	err = json.NewDecoder(resp.Body).Decode(&msgB)
 	if err != nil {
-		log.Fatalf("An Error Occured %v", err)
+		fmt.Println(err)
+		return "", err
 	}
 
 	keyA, err := state.Finish(msgB)
 	if err != nil {
-		log.Fatalf("An Error Occured %v", err)
+		fmt.Println(err)
+		return "", err
 	}
 
 	postBody, _ = json.Marshal(keyA)
 	responseBody = bytes.NewBuffer(postBody)
 	resp2, err := http.Post("http://localhost:8090/authentication-finalize", "application/json", responseBody)
 	if err != nil {
-		log.Fatalf("An Error Occured %v", err)
+		fmt.Println(err)
+		return "", err
 	}
 
 	var respBody string
 
 	err = json.NewDecoder(resp2.Body).Decode(&respBody)
 	if err != nil {
-		log.Fatalf("An Error Occured %v", err)
+		fmt.Println(err)
+		return "", err
 	}
 
-	fmt.Println(respBody)
+	return respBody, nil
 }

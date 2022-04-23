@@ -4,22 +4,29 @@ import (
 	"encoding/json"
 	cpaceLib "filippo.io/cpace"
 	"fmt"
+	"github.com/armr-dev/cpace-go/internal/app/client"
 	"github.com/armr-dev/cpace-go/internal/app/cpace"
+	"github.com/armr-dev/cpace-go/internal/utils"
 	"net/http"
 )
 
 func (k *Keys) authenticationInit(w http.ResponseWriter, req *http.Request) {
-	var user = userRecords.Users[0]
-	c := cpaceLib.NewContextInfo(string(user.UserName), string(cpace.ServerId), nil)
-	var msgA []byte
-
-	var err = json.NewDecoder(req.Body).Decode(&msgA)
+	var clientReg client.ClientRegistration
+	var err = json.NewDecoder(req.Body).Decode(&clientReg)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	msgB, keyB, err := cpaceLib.Exchange(string(user.Password), c, msgA)
+	user, err := utils.FindUser(userRecords.Users, clientReg.UserName)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	c := cpaceLib.NewContextInfo(string(user.UserName), string(cpace.ServerId), nil)
+
+	msgB, keyB, err := cpaceLib.Exchange(string(user.Password), c, clientReg.MsgA)
 
 	err = json.NewEncoder(w).Encode(msgB)
 	if err != nil {

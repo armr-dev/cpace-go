@@ -3,17 +3,14 @@ package client
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
-	"github.com/armr-dev/cpace-go/internal/app/cpace"
 	"github.com/armr-dev/cpace-go/internal/app/user"
-	"log"
 	"net/http"
 )
 
-func registrationReq() {
+func registrationReq(username, password string) (string, error) {
 	var newUser = user.User{
-		cpace.DefaultUserName,
-		cpace.DefaultPassword,
+		UserName: []byte(username),
+		Password: []byte(password),
 	}
 
 	postBody, _ := json.Marshal(newUser)
@@ -21,15 +18,15 @@ func registrationReq() {
 
 	resp, err := http.Post("http://localhost:8090/registration", "application/json", responseBody)
 	if err != nil {
-		log.Fatalf("An Error Occured %v", err)
+		return "", err
 	}
 
 	var respBody string
 
 	err = json.NewDecoder(resp.Body).Decode(&respBody)
 	if err != nil {
-		log.Fatalf("An Error Occured %v", err)
+		return "", err
 	}
 
-	fmt.Println(respBody)
+	return respBody, nil
 }
