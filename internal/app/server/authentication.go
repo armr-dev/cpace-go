@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	cpaceLib "filippo.io/cpace"
 	"fmt"
 	"github.com/armr-dev/cpace-go/internal/app/client"
 	"github.com/armr-dev/cpace-go/internal/app/cpace"
@@ -24,9 +23,9 @@ func (k *Keys) authenticationInit(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	c := cpaceLib.NewContextInfo(string(user.UserName), string(cpace.ServerId), nil)
+	c := cpace.NewContextInfo(string(user.UserName), string(cpace.ServerId), nil)
 
-	msgB, keyB, err := cpaceLib.Exchange(string(user.Password), c, clientReg.MsgA)
+	msgB, keyB, err := cpace.Exchange(string(user.Password), c, clientReg.MsgA)
 
 	err = json.NewEncoder(w).Encode(msgB)
 	if err != nil {

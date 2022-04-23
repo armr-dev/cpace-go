@@ -3,7 +3,6 @@ package client
 import (
 	"bytes"
 	"encoding/json"
-	cpaceLib "filippo.io/cpace"
 	"fmt"
 	"github.com/armr-dev/cpace-go/internal/app/cpace"
 	"github.com/armr-dev/cpace-go/internal/utils"
@@ -16,9 +15,9 @@ type ClientRegistration struct {
 }
 
 func authentication(username, password string) (string, error) {
-	c := cpaceLib.NewContextInfo(username, string(cpace.ServerId), nil)
+	c := cpace.NewContextInfo(username, string(cpace.ServerId), nil)
 
-	msgA, state, err := cpaceLib.Start(password, c)
+	msgA, state, err := cpace.Start(password, c)
 	if err != nil {
 		fmt.Println(err)
 		return "", err
